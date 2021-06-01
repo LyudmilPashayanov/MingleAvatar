@@ -10,7 +10,7 @@ namespace Mingle.Services
     {
         Avatar CreateAvatar(Avatar newAvatar);
         IEnumerable<Avatar> GetAllAvatars();
-        Avatar GetAvatarFromId(string id);
+        Avatar GetAvatarById(string id);
         void DeleteAvatar(string id);
     }
 }

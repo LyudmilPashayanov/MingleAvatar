@@ -20,6 +20,7 @@ namespace Mingle
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -27,7 +28,14 @@ namespace Mingle
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IAvatarsRepository, AvatarsRepository>();
+            if (null == MingleSerializer.DeserializeAvatars())
+            {
+                services.AddSingleton<IAvatarsRepository,AvatarsRepository>();
+            }
+            else
+            {
+                services.AddSingleton<IAvatarsRepository>((IAvatarsRepository)MingleSerializer.DeserializeAvatars());
+            }
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Mingle.Entinies;
 using Mingle.Services;
 using System;
+using Mingle.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Mingle.Controllers
 {
@@ -43,7 +46,7 @@ namespace Mingle.Controllers
 
         public IActionResult GetById(string IdToGet)
         {
-            Avatar existingAvatar = avatarsRepository.GetAvatarFromId(IdToGet);
+            Avatar existingAvatar = avatarsRepository.GetAvatarById(IdToGet);
             if(existingAvatar == null) 
             {
                 return NotFound();
@@ -68,9 +71,9 @@ namespace Mingle.Controllers
                 }
                 avatarsRepository.CreateAvatar(newAvatar);
             }
-            catch (ArgumentException) 
+            catch (AvatarAlreadyExistsException arg) 
             {
-                return BadRequest(string.Format("Avatar with Id \"{0}\" already exists. Please type in another Id.", newAvatar.Id));
+                return BadRequest(arg.Message);
             }
 
             return CreatedAtAction("GetById", new { id = newAvatar.Id }, newAvatar);
@@ -83,17 +86,16 @@ namespace Mingle.Controllers
         [Route("{IdToDelete}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult DeveleAvatar(string IdToDelete) 
+        public IActionResult DeleteAvatar(string IdToDelete) 
         {
             try 
             {
                 avatarsRepository.DeleteAvatar(IdToDelete);            
             }
-            catch(ArgumentException argEx)
+            catch(AvatarNotFoundException arg)
             {
-                return NotFound(argEx);
+                return NotFound(arg.Message);
             }
-
             return NoContent();
         }
     }
