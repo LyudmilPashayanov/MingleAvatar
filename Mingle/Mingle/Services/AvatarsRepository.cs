@@ -10,11 +10,14 @@ namespace Mingle.Services
         public string Id { get; set; }
         public string Name { get; set; }
         public float Shoesize { get; set; }
-        public bool Color { get; set; }
+        /// <summary>
+        /// Color is string, as now it has 2 colors, but tomorrow it may have more.
+        /// </summary>
+        public string Color { get; set; }
         public bool CanMineUnobtainium { get; set; }
     }
 
-    public class AvatarsRepository
+    public class AvatarsRepository : IAvatarsRepository
     {
         private List<Avatar> Avatars { get; } = new List<Avatar>();
        
@@ -23,8 +26,15 @@ namespace Mingle.Services
         /// </summary>
         /// <param name="newAvatar"></param>
         /// <returns></returns>
-        public Avatar Create(Avatar newAvatar) 
+        public Avatar CreateAvatar(Avatar newAvatar) 
         {
+            foreach (Avatar a in Avatars)
+            {
+                if (a.Id == newAvatar.Id) 
+                {
+                    throw new ArgumentException("Avatar with such Id already exists. ", nameof(newAvatar.Id));
+                }
+            }
             Avatars.Add(newAvatar);
             return newAvatar;
         }
@@ -56,6 +66,5 @@ namespace Mingle.Services
                 throw new ArgumentException("No Avatar exists with the given Id", nameof(id));
             }
         }
-
     }
 }
