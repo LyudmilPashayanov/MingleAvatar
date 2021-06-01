@@ -31,7 +31,19 @@ namespace Mingle
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mingle", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                {
+                    Title = "Mingle", 
+                    Version = "v1",
+                    Description = "Mingle assignment to demonstrate Avatar API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Lyudmil Pashayanov",
+                        Email = "sytix1@hotmail.com",
+                        Url = new Uri("https://www.lyudmilpashayanov.com"),
+                    },
+
+                });
             });
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mingle.Entinies;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,6 @@ namespace Mingle.Services
     {
         Avatar CreateAvatar(Avatar newAvatar);
         IEnumerable<Avatar> GetAllAvatars();
-
         Avatar GetAvatarFromId(string id);
         void DeleteAvatar(string id);
     }

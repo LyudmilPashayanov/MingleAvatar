@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mingle.Entinies;
 using Mingle.Services;
 using System;
 using System.Collections.Generic;
@@ -12,31 +13,37 @@ namespace Mingle.Controllers
     [ApiController]
     public class AvatarsController : ControllerBase
     {
-        private readonly IAvatarsRepository repository;
+        private readonly IAvatarsRepository avatarsRepository;
 
         /// <summary>
-        /// Constructed by following the Dependency Injection pattern. Injected from Startup.cs - ConfigureServices().
+        /// Constructed by following the Dependency Injection pattern.
         /// </summary>
-        /// <param name="avatarsRepository"></param>
+        /// <param name="avatarsRepository"> Injected from Startup.cs - ConfigureServices().</param>
         public AvatarsController(IAvatarsRepository avatarsRepository) 
         {
-            this.repository = avatarsRepository;
+            this.avatarsRepository = avatarsRepository;
         }
 
+        /// <summary>
+        /// Returns all currently available avatars.
+        /// </summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(IEnumerable<Avatar>))]
         public IActionResult GetAll() 
         {
-            return Ok(repository.GetAllAvatars());
+            return Ok(avatarsRepository.GetAllAvatars());
         }
 
+        /// <summary>
+        /// Returns the avatar with that Id. If no such Id is available, returns null.
+        /// </summary>
         [HttpGet("GetById", Name = nameof(GetById))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Avatar))]
 
         public IActionResult GetById(string IdToGet)
         {
-            Avatar existingAvatar = repository.GetAvatarFromId(IdToGet);
+            Avatar existingAvatar = avatarsRepository.GetAvatarFromId(IdToGet);
             if(existingAvatar == null) 
             {
                 return NotFound();
@@ -44,6 +51,9 @@ namespace Mingle.Controllers
             return Ok(existingAvatar);
         }
 
+        /// <summary>
+        /// Creates a new avatar - Requirements: Id can not be null or empty.
+        /// </summary>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Avatar))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
@@ -54,9 +64,9 @@ namespace Mingle.Controllers
             {
                 if (string.IsNullOrEmpty(newAvatar.Id) )
                 {
-                    return BadRequest("Please specify an Id- Id can not be empty.");
+                    return BadRequest("Please specify an Id: Id can not be empty.");
                 }
-                repository.CreateAvatar(newAvatar);
+                avatarsRepository.CreateAvatar(newAvatar);
             }
             catch (ArgumentException) 
             {
@@ -66,6 +76,9 @@ namespace Mingle.Controllers
             return CreatedAtAction("GetById", new { id = newAvatar.Id }, newAvatar);
         }
 
+        /// <summary>
+        /// Deletes an already existing Avatar.
+        /// </summary>
         [HttpDelete]
         [Route("{IdToDelete}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -74,7 +87,7 @@ namespace Mingle.Controllers
         {
             try 
             {
-                repository.DeleteAvatar(IdToDelete);            
+                avatarsRepository.DeleteAvatar(IdToDelete);            
             }
             catch(ArgumentException argEx)
             {
