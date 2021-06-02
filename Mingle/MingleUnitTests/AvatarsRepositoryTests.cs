@@ -73,6 +73,36 @@ namespace MingleUnitTests
             Assert.Null(result);
         }
 
+        [Fact]
+        public void DeleteAvatar_Successfully()
+        {
+            //Arrange
+            var repository = new AvatarsRepository();
+            repository.avatars = GetTestAvatars();
+            var newAvatar = new Avatar() { Id = "Mingle", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
+            repository.avatars.Add(newAvatar);
+
+            //Act           
+            repository.DeleteAvatar("Mingle");
+
+            //assert
+            repository.avatars.Should().BeEquivalentTo(GetTestAvatars());
+        }
+
+        [Fact]
+        public void DeleteAvatar_Throws_AvatarNotFoundException()
+        {
+            //Arrange
+            var repository = new AvatarsRepository();
+            repository.avatars = GetTestAvatars();
+
+            //Act           
+            Action act = () => { repository.DeleteAvatar("Mingle"); };
+
+            //assert
+            Assert.Throws<AvatarNotFoundException>(act);
+        }
+
         private List<Avatar> GetTestAvatars()
         {
             List<Avatar> testProducts = new List<Avatar>();
