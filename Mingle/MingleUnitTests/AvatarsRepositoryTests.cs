@@ -37,13 +37,41 @@ namespace MingleUnitTests
             repository.avatars = GetTestAvatars();
             var newAvatar = new Avatar() { Id = "MingleSPORTS", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
 
-            //Act
-            
+            //Act           
             Action act = () => repository.CreateAvatar(newAvatar);
 
             //assert
             Assert.Throws<AvatarAlreadyExistsException>(act);
-            }
+        }
+        
+             [Fact]
+        public void GetAvatarById_Returns_Correct_Avatar()
+        {
+            //Arrange
+            var repository = new AvatarsRepository();
+            repository.avatars = GetTestAvatars();
+            var newAvatar = new Avatar() { Id = "Mingle", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
+            repository.avatars.Add(newAvatar);
+            //Act           
+            var result = repository.GetAvatarById("Mingle");
+
+            //assert
+            Assert.Equal(newAvatar, result);
+        }
+
+        [Fact]
+        public void GetAvatarById_Returns_Null()
+        {
+            //Arrange
+            var repository = new AvatarsRepository();
+            repository.avatars = GetTestAvatars();
+
+            //Act           
+            var result = repository.GetAvatarById("Mingle");
+
+            //assert
+            Assert.Null(result);
+        }
 
         private List<Avatar> GetTestAvatars()
         {
