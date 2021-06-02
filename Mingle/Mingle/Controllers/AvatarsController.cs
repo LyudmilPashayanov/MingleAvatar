@@ -32,7 +32,7 @@ namespace Mingle.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(IEnumerable<Avatar>))]
-        public IActionResult GetAll() 
+        public IActionResult GetAllAvatars() 
         {
             return Ok(avatarsRepository.GetAllAvatars());
         }
