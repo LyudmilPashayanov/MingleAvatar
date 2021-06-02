@@ -67,10 +67,10 @@ namespace MingleUnitTests
             repository.avatars = GetTestAvatars();
 
             //Act           
-            var result = repository.GetAvatarById("Mingle");
+            Action act = () => { repository.GetAvatarById("MingleTest"); };
 
             //assert
-            Assert.Null(result);
+            Assert.Throws<AvatarNotFoundException>(act);
         }
 
         [Fact]

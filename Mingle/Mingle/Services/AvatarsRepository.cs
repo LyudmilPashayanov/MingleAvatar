@@ -41,7 +41,12 @@ namespace Mingle.Services
         /// <returns></returns>
         public Avatar GetAvatarById(string id) 
         {
-            return avatars.FirstOrDefault(a => a.Id == id);
+            Avatar found = avatars.FirstOrDefault(a => a.Id == id);
+            if(found != null) 
+            {
+                return found;
+            }
+            throw new AvatarNotFoundException("No such avatar with that Id was found.");
         }
 
         public void DeleteAvatar(string id) 

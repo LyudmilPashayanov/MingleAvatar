@@ -46,12 +46,16 @@ namespace Mingle.Controllers
 
         public IActionResult GetById(string IdToGet)
         {
-            Avatar existingAvatar = avatarsRepository.GetAvatarById(IdToGet);
-            if(existingAvatar == null) 
+            try
             {
-                return NotFound();
+                Avatar existingAvatar = avatarsRepository.GetAvatarById(IdToGet);
+                return Ok(existingAvatar);
             }
-            return Ok(existingAvatar);
+            catch(AvatarNotFoundException ex) 
+            {
+                return NotFound(ex.Message);
+            }
+            
         }
 
         /// <summary>

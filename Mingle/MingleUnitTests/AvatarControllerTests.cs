@@ -54,17 +54,16 @@ namespace MingleUnitTests
         public void GetById_Returns_NotFoundResult()
         {
             //Arrange
-            var newAvatar = new Avatar() { Id = "testAvatar", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
             var avatarRepositoryMock = new Mock<IAvatarsRepository>();
-            avatarRepositoryMock.Setup(rep => rep.GetAvatarById("testAvatar"))
-                .Returns(newAvatar);
+            avatarRepositoryMock.Setup(rep => rep.GetAvatarById(It.IsAny<string>()))
+                .Throws<AvatarNotFoundException>();
             var controller = new AvatarsController(avatarRepositoryMock.Object);
 
             //Act
             var actionResult = controller.GetById("test_Avatar");
 
             //Assert
-            Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundResult>(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundObjectResult>(actionResult);
         }
 
         [Fact]
