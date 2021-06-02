@@ -20,7 +20,7 @@ namespace Mingle.Services
         /// <returns></returns>
         public Avatar CreateAvatar(Avatar newAvatar) 
         {
-            if (avatars.FirstOrDefault(a => a.Id == newAvatar.Id) != null)
+            if (GetAllAvatars().FirstOrDefault(a => a.Id == newAvatar.Id) != null)
             {
                 throw new AvatarAlreadyExistsException("Avatar with such Id already exists. ");
             }
@@ -47,7 +47,7 @@ namespace Mingle.Services
         public void DeleteAvatar(string id) 
         {
             Avatar avatarToDelete = GetAvatarById(id);
-            if(avatarToDelete != null) 
+            if(avatarToDelete != null)
             {
                 avatars.Remove(avatarToDelete);
                 SaveState();

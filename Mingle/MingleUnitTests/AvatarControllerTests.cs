@@ -30,6 +30,7 @@ namespace MingleUnitTests
 
             //Assert
             Assert.NotNull(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.OkObjectResult>(actionResult);
             contentResult.Value.Should().BeEquivalentTo(GetTestAvatars());
         }
 
@@ -51,6 +52,7 @@ namespace MingleUnitTests
 
             //Assert
             Assert.NotNull(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.OkObjectResult>(actionResult);
             contentResult.Value.Should().NotBeEquivalentTo(GetTestAvatars());
         }
 
@@ -73,6 +75,7 @@ namespace MingleUnitTests
 
             //Assert
             Assert.NotNull(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.OkObjectResult>(actionResult);
             contentResult.Value.Should().BeEquivalentTo(newAvatar);
         }
         [Fact]
@@ -94,6 +97,101 @@ namespace MingleUnitTests
 
             //Assert
             Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundResult>(actionResult);
+        }
+
+        [Fact]
+        public void AddAvatar_Correct_Creates_And_Returns_New_Avatar()
+        {
+            //Arrange
+            var newAvatar = new Avatar() { Id = "testAvatar", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
+            var avatarRepositoryMock = new Mock<IAvatarsRepository>();
+            avatarRepositoryMock.Setup(rep => rep.CreateAvatar(newAvatar))
+                .Returns(newAvatar);
+            var controller = new AvatarsController(avatarRepositoryMock.Object);
+
+            //Act
+
+            var actionResult = controller.AddAvatar(newAvatar);
+            var contentResult = actionResult as CreatedAtActionResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.CreatedAtActionResult>(actionResult);
+            contentResult.Value.Should().BeEquivalentTo(newAvatar);
+        }
+
+        [Fact]
+        public void AddAvatar_Returns_BadRequest_When_Empty_Id_Given()
+        {
+            //Arrange
+            var newAvatar = new Avatar() { Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
+            var avatarRepositoryMock = new Mock<IAvatarsRepository>();
+            avatarRepositoryMock.Setup(rep => rep.CreateAvatar(newAvatar))
+                .Returns(newAvatar);
+            var controller = new AvatarsController(avatarRepositoryMock.Object);
+
+            //Act
+
+            var actionResult = controller.AddAvatar(newAvatar);
+            //var contentResult = actionResult as CreatedAtActionResult;
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.BadRequestObjectResult>(actionResult);
+        }
+
+        [Fact]
+        public void AddAvatar_Returns_AvatarAlreadyExistedException()
+        {
+            //Arrange
+            var newAvatar = new Avatar() { Id = "testAvatar", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
+            var avatarRepositoryMock = new Mock<IAvatarsRepository>();  
+            avatarRepositoryMock.Setup(rep => rep.CreateAvatar(Moq.It.IsAny<Avatar>()))
+                .Throws<AvatarAlreadyExistsException>(); 
+            var controller = new AvatarsController(avatarRepositoryMock.Object);
+
+            //Act
+             var actionResult = controller.AddAvatar(newAvatar);
+           
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.BadRequestObjectResult>(actionResult);
+            //Assert.Throws<AvatarAlreadyExistsException>(() => controller.AddAvatar(newAvatar));
+        }
+
+        [Fact]
+        public void DeleteAvatar_Successfully_Returns_NoContentResult()
+        {
+            //Arrange
+            var avatarRepositoryMock = new Mock<IAvatarsRepository>();
+            var controller = new AvatarsController(avatarRepositoryMock.Object);
+
+            //Act
+            var actionResult = controller.DeleteAvatar("testAvatar");
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.NoContentResult>(actionResult);
+            //Assert.Throws<AvatarAlreadyExistsException>(() => controller.AddAvatar(newAvatar));
+        }
+
+        [Fact]
+        public void DeleteAvatar_Returns_AvatarNotFoundException()
+        {
+            //Arrange
+            var newAvatar = new Avatar() { Id = "testAvatar", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
+            var avatarRepositoryMock = new Mock<IAvatarsRepository>();
+            avatarRepositoryMock.Setup(rep => rep.DeleteAvatar("testAvatar"))
+                .Throws<AvatarNotFoundException>();
+            var controller = new AvatarsController(avatarRepositoryMock.Object);
+
+            //Act
+            var actionResult = controller.DeleteAvatar("testAvatar");
+
+            //Assert
+            Assert.NotNull(actionResult);
+            Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundObjectResult>(actionResult);
+            //Assert.Throws<AvatarAlreadyExistsException>(() => controller.AddAvatar(newAvatar));
         }
 
         private List<Avatar> GetTestAvatars()
