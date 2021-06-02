@@ -27,4 +27,3 @@ F:\MingleProject\Mingle\Mingle\obj\Debug\net5.0\Mingle.dll
 F:\MingleProject\Mingle\Mingle\obj\Debug\net5.0\ref\Mingle.dll
 F:\MingleProject\Mingle\Mingle\obj\Debug\net5.0\Mingle.pdb
 F:\MingleProject\Mingle\Mingle\obj\Debug\net5.0\Mingle.genruntimeconfig.cache
-F:\MingleProject\Mingle\Mingle\bin\Debug\net5.0\SavedAvatars.json

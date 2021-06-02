@@ -11,7 +11,7 @@ namespace Mingle.Services
     [Serializable]
     public class AvatarsRepository : IAvatarsRepository
     {
-        public List<Avatar> Avatars { get; set; } = new List<Avatar>();
+        public List<Avatar> avatars { get; set; } = new List<Avatar>();
        
         /// <summary>
         /// It also returns the newly created Avatar, as during creation some fields may change, so we will have the correct created Avatar after POSTing.
@@ -20,18 +20,18 @@ namespace Mingle.Services
         /// <returns></returns>
         public Avatar CreateAvatar(Avatar newAvatar) 
         {
-            if (Avatars.FirstOrDefault(a => a.Id == newAvatar.Id) != null)
+            if (avatars.FirstOrDefault(a => a.Id == newAvatar.Id) != null)
             {
                 throw new AvatarAlreadyExistsException("Avatar with such Id already exists. ");
             }
-            Avatars.Add(newAvatar);
+            avatars.Add(newAvatar);
             SaveState();
             return newAvatar;
         }
         
         public IEnumerable<Avatar> GetAllAvatars() 
         {
-            return Avatars;
+            return avatars;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Mingle.Services
         /// <returns></returns>
         public Avatar GetAvatarById(string id) 
         {
-            return Avatars.FirstOrDefault(a => a.Id == id);
+            return avatars.FirstOrDefault(a => a.Id == id);
         }
 
         public void DeleteAvatar(string id) 
@@ -49,7 +49,7 @@ namespace Mingle.Services
             Avatar avatarToDelete = GetAvatarById(id);
             if(avatarToDelete != null) 
             {
-                Avatars.Remove(avatarToDelete);
+                avatars.Remove(avatarToDelete);
                 SaveState();
             }
             else
