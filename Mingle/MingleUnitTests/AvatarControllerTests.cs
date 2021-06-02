@@ -141,7 +141,7 @@ namespace MingleUnitTests
         }
 
         [Fact]
-        public void AddAvatar_Returns_AvatarAlreadyExistedException()
+        public void AddAvatar_Returns_BadRequestResult_Because_AvatarAlreadyExistedException()
         {
             //Arrange
             var newAvatar = new Avatar() { Id = "testAvatar", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
@@ -176,7 +176,7 @@ namespace MingleUnitTests
         }
 
         [Fact]
-        public void DeleteAvatar_Returns_AvatarNotFoundException()
+        public void DeleteAvatar_Returns_NotFoundResult_Because_AvatarNotFoundException()
         {
             //Arrange
             var newAvatar = new Avatar() { Id = "testAvatar", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
