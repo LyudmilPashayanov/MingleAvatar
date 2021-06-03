@@ -7,12 +7,8 @@ namespace Mingle.Exceptions
 {
     public class AvatarAlreadyExistsException : Exception
     {
-        public AvatarAlreadyExistsException()
-        {
-        }
-
-        public AvatarAlreadyExistsException(string message)
-            : base(message)
+        public AvatarAlreadyExistsException(string avatarId)
+            : base($"Avatar with such Id \"{avatarId}\" already exists.")
         {
         }
     }

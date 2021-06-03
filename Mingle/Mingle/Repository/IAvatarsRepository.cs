@@ -1,10 +1,10 @@
-﻿using Mingle.Entinies;
+﻿using Mingle.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mingle.Services
+namespace Mingle.Repository
 {
     public interface IAvatarsRepository
     {

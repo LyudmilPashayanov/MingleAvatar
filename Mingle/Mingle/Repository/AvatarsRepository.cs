@@ -1,12 +1,10 @@
-﻿using Mingle.Entinies;
+﻿using Mingle.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Mingle.Exceptions;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace Mingle.Services
+namespace Mingle.Repository
 {
     [Serializable]
     public class AvatarsRepository : IAvatarsRepository
@@ -22,7 +20,7 @@ namespace Mingle.Services
         {
             if (GetAllAvatars().FirstOrDefault(a => a.Id == newAvatar.Id) != null)
             {
-                throw new AvatarAlreadyExistsException("Avatar with such Id already exists. ");
+                throw new AvatarAlreadyExistsException(newAvatar.Id);
             }
             avatars.Add(newAvatar);
             SaveState();
@@ -46,7 +44,7 @@ namespace Mingle.Services
             {
                 return found;
             }
-            throw new AvatarNotFoundException("No such avatar with that Id was found.");
+            throw new AvatarNotFoundException(id);
         }
 
         public void DeleteAvatar(string id) 
@@ -59,7 +57,7 @@ namespace Mingle.Services
             }
             else
             {
-                throw new AvatarNotFoundException("No such avatar exists with the given Id.");
+                throw new AvatarNotFoundException(id);
             }
         }
 

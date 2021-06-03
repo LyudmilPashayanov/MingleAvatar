@@ -7,12 +7,8 @@ namespace Mingle.Exceptions
 {
     public class AvatarNotFoundException : Exception
     {
-        public AvatarNotFoundException()
-        {
-        }
-
-        public AvatarNotFoundException(string message)
-            : base(message)
+        public AvatarNotFoundException(string avatarId)
+            : base($"No such avatar with that Id \"{avatarId}\" was found.")
         {
         }
     }

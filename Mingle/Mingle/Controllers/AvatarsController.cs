@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Mingle.Entinies;
-using Mingle.Services;
+using Mingle.Model;
+using Mingle.Repository;
 using System;
 using Mingle.Exceptions;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Mingle.Controllers
 {

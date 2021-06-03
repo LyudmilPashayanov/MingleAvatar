@@ -2,15 +2,16 @@
 using Xunit;
 using Moq;
 using System.Collections.Generic;
-using Mingle.Entinies;
+using Mingle.Model;
 using Mingle.Controllers;
-using Mingle.Services;
+using Mingle.Repository;
 using Mingle.Exceptions;
 using Mingle;
 using System.Web.Http.Results;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;
+using System.Threading;
 
 namespace MingleUnitTests
 {
@@ -27,6 +28,7 @@ namespace MingleUnitTests
             repo.avatars = testProducts;
 
             //Act
+            Thread.Sleep(200); // this is added as it interferes with the other tests and it returns IOException if all are run simultaneously.
             MingleSerializer.SerializeAvatars(repo);
             AvatarsRepository actedRepo = MingleSerializer.DeserializeAvatars();
 

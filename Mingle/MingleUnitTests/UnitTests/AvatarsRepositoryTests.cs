@@ -1,15 +1,11 @@
 ﻿using System;
 using Xunit;
-using Moq;
 using System.Collections.Generic;
-using Mingle.Entinies;
-using Mingle.Controllers;
-using Mingle.Services;
+using Mingle.Model;
+using Mingle.Repository;
 using Mingle.Exceptions;
-using System.Web.Http.Results;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;
+
 namespace MingleUnitTests
 {
     public class AvatarsRepositoryTests
@@ -105,13 +101,13 @@ namespace MingleUnitTests
 
         private List<Avatar> GetTestAvatars()
         {
-            List<Avatar> testProducts = new List<Avatar>();
-            testProducts.Add(new Avatar { Id = "MingleSPORTS", Name = "Mingle", Color = "Blue", CanMineUnobtainium = true, Shoesize = 80 });
-            testProducts.Add(new Avatar { Id = "J00s7", Name = "Joost", Color = "Blue", CanMineUnobtainium = true, Shoesize = 44.5f });
-            testProducts.Add(new Avatar { Id = "Au_ke", Name = "Auke", Color = "Red", CanMineUnobtainium = true, Shoesize = 43 });
-            testProducts.Add(new Avatar { Id = "Lyudmil_15", Name = "Lyudmil", Color = "Red", CanMineUnobtainium = true, Shoesize = 45.5f });
+            List<Avatar> testAvatars = new List<Avatar>();
+            testAvatars.Add(new Avatar { Id = "MingleSPORTS", Name = "Mingle", Color = "Blue", CanMineUnobtainium = true, Shoesize = 80 });
+            testAvatars.Add(new Avatar { Id = "J00s7", Name = "Joost", Color = "Blue", CanMineUnobtainium = true, Shoesize = 44.5f });
+            testAvatars.Add(new Avatar { Id = "Au_ke", Name = "Auke", Color = "Red", CanMineUnobtainium = true, Shoesize = 43 });
+            testAvatars.Add(new Avatar { Id = "Lyudmil_15", Name = "Lyudmil", Color = "Red", CanMineUnobtainium = true, Shoesize = 45.5f });
 
-            return testProducts;
+            return testAvatars;
         }
     }
 }

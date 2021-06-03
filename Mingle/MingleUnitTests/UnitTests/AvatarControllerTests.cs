@@ -2,12 +2,10 @@ using System;
 using Xunit;
 using Moq;
 using System.Collections.Generic;
-using Mingle.Entinies;
+using Mingle.Model;
 using Mingle.Controllers;
-using Mingle.Services;
+using Mingle.Repository;
 using Mingle.Exceptions;
-using System.Web.Http.Results;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using FluentAssertions;
 namespace MingleUnitTests
@@ -22,7 +20,7 @@ namespace MingleUnitTests
             avatarRepositoryMock.Setup(rep => rep.GetAllAvatars())
                 .Returns(Moq.It.IsAny<List<Avatar>>);
             var controller = new AvatarsController(avatarRepositoryMock.Object);
-   
+
             //Act
             var actionResult = controller.GetAllAvatars();
 
@@ -56,7 +54,7 @@ namespace MingleUnitTests
             //Arrange
             var avatarRepositoryMock = new Mock<IAvatarsRepository>();
             avatarRepositoryMock.Setup(rep => rep.GetAvatarById(It.IsAny<string>()))
-                .Throws<AvatarNotFoundException>();
+                .Throws(new AvatarNotFoundException(It.IsAny<string>()));
             var controller = new AvatarsController(avatarRepositoryMock.Object);
 
             //Act
@@ -111,7 +109,7 @@ namespace MingleUnitTests
             var newAvatar = new Avatar() { Id = "testAvatar", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
             var avatarRepositoryMock = new Mock<IAvatarsRepository>();  
             avatarRepositoryMock.Setup(rep => rep.CreateAvatar(Moq.It.IsAny<Avatar>()))
-                .Throws<AvatarAlreadyExistsException>(); 
+                .Throws(new AvatarAlreadyExistsException(It.IsAny<string>())); 
             var controller = new AvatarsController(avatarRepositoryMock.Object);
 
             //Act
@@ -144,7 +142,7 @@ namespace MingleUnitTests
             var newAvatar = new Avatar() { Id = "testAvatar", Name = "Mr. Wrong", Shoesize = 23.4f, CanMineUnobtainium = false, Color = "Blue" };
             var avatarRepositoryMock = new Mock<IAvatarsRepository>();
             avatarRepositoryMock.Setup(rep => rep.DeleteAvatar("testAvatar"))
-                .Throws<AvatarNotFoundException>();
+                .Throws(new AvatarNotFoundException(It.IsAny<string>()));
             var controller = new AvatarsController(avatarRepositoryMock.Object);
 
             //Act
